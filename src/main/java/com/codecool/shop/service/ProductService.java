@@ -26,14 +26,14 @@ public class ProductService{
 
     public Supplier getSupplierById(int supplierId) { return supplierDao.find(supplierId); }
 
-    public List<Product> getProductsForCategory(int categoryId){
+    public List<Product> getProductsByCategoryId(int categoryId){
         var category = productCategoryDao.find(categoryId);
-        return productDao.getBy(category);
+        return productDao.getProductsByCategory(category);
     }
 
     public List<Product> getProductsBySupplierId(int supplierId) {
         var supplier = supplierDao.find(supplierId);
-        return productDao.getBy(supplier);
+        return productDao.getProductsBySupplier(supplier);
     }
 
     public List<Supplier> getAllSuppliers() { return supplierDao.getAll(); }
