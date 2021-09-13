@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<header th:fragment="copy">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Codecool Shop</a>
+            <div class="modal fade" id="mainMenuModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalToggleLabel">SHOP BY CATEGORY OR SUPPLIER</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="vstack gap-3">
+                                <div class="bg-light border">
+                                    <button class="btn btn-light" data-bs-target="#categoriesModal" data-bs-toggle="modal" data-bs-dismiss="modal">Categories</button><br><br>
+                                    <button class="btn btn-light" data-bs-target="#suppliersModal" data-bs-toggle="modal" data-bs-dismiss="modal">Suppliers</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="categoriesModal" aria-hidden="true" aria-labelledby="categoriesModalLabel" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="categoriesModalLabel">Categories</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/" method="post">
+                                <div class="vstack gap-3" th:each="category,iterStat : ${categories}">
+                                    <div class="bg-light border">
+                                        <button type="submit" name="category" th:value="${category.getId()}" class="btn btn-light" th:text="${category.getName()}">Category name</button><br><br>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" data-bs-target="#mainMenuModal" data-bs-toggle="modal">Back to Menu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="suppliersModal" aria-hidden="true" aria-labelledby="suppliersModalLabel" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="suppliersModalLabel">Suppliers</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/" method="post">
+                                <div class="vstack gap-3" th:each="supplier,iterStat : ${suppliers}">
+                                    <div class="bg-light border">
+                                        <button type="submit" name="supplier" th:value="${supplier.getId()}" class="btn btn-light" th:text="${supplier.getName()}">Supplier name</button><br><br>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" data-bs-target="#mainMenuModal" data-bs-toggle="modal">Back to Menu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="btn btn-primary" data-bs-toggle="modal" href="#mainMenuModal" role="button">Menu</a>
+        </div>
+    </nav>
+</header>
+
+</body>
+</html>
