@@ -24,6 +24,8 @@ public class ProductService{
         return productCategoryDao.find(categoryId);
     }
 
+    public Supplier getSupplierById(int supplierId) { return supplierDao.find(supplierId); }
+
     public List<Product> getProductsForCategory(int categoryId){
         var category = productCategoryDao.find(categoryId);
         return productDao.getBy(category);
