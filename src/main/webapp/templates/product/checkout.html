@@ -21,7 +21,8 @@
 
 <header th:replace="header.html :: copy"></header>
 
-<div class="container form-group col">
+<div class="container form-group col ">
+    <h2>Please enter your details</h2><br><br>
         <form method="post" action="checkout">
             <div class="form-group col-md-6">
                 <label for="email">Email</label>
@@ -54,7 +55,7 @@
         <form action="https://www.paypal.com/us/signin">
             <button class="btn btn-primary" id="paypalButton">Continue with Paypal</button>
         </form>
-    </div>
+</div>
 
 <footer th:replace="footer.html :: copy"></footer>
 

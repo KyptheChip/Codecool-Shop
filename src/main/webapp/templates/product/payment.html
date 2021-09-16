@@ -21,12 +21,13 @@
 
 <header th:replace="header.html :: copy"></header>
 
-<div class="container form-group col">
+<div class="container form-group col ">
+    <h2>Please enter your credit card details</h2><br><br>
     <form method="post" action="payment">
         <div class="form-group col">
             <label for="cardNumber" class="col-sm-2 col-form-label">Card Number</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control-plaintext" id="cardNumber" maxlength="8" minlength="8">
+                <input type="text" class="form-control" id="cardNumber" maxlength="8" minlength="8">
             </div>
 
             <label for="cardName" class="col-sm-2 col-form-label">Holder name</label>
@@ -42,11 +43,13 @@
             <label for="cvv" class="col-sm-2 col-form-label">CVV Code</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="cvv" maxlength="3" minlength="3">
-            </div>
-            <button type="submit" class="btn btn-primary"  id="finalButton">Pay!</button>
+            </div><br>
+            <button type="submit" class="btn btn-primary" id="finalButton">Pay!</button>
         </div>
     </form>
 </div>
+
+
 
 <footer th:replace="footer.html :: copy"></footer>
 
