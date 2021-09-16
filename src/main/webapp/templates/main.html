@@ -29,22 +29,22 @@
             <div class="modal fade bd-example-modal-lg payment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
-                        <form method="post">
+                        <form method="post" class="needs-validation">
                             <div class="form-group col-md-6">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" placeholder="Email">
+                                <input type="text" class="form-control" id="email" placeholder="Email" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="Name">
+                                <input type="text" class="form-control" id="name" placeholder="Name" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="phoneNumber">Phone Number</label>
-                                <input type="tel" class="form-control" id="phoneNumber" placeholder="Phone Number">
+                                <input type="text" class="form-control" id="phoneNumber" placeholder="Phone Number" required>
                             </div>
                             <div class="form-group">
                                 <label for="deliveryAddress">Delivery Address</label>
-                                <input type="text" class="form-control" id="deliveryAddress" placeholder="1234 Main St">
+                                <input type="text" class="form-control" id="deliveryAddress" placeholder="1234 Main St" required>
                             </div>
                             <div class="form-group">
                                 <label for="billingAddress">Billing Address</label>
@@ -53,11 +53,11 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="inputCity">City</label>
-                                    <input type="text" class="form-control" id="inputCity">
+                                    <input type="text" class="form-control" id="inputCity" required>
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label for="inputZip">Zip</label>
-                                    <input type="text" class="form-control" id="inputZip">
+                                    <input type="text" class="form-control" id="inputZip" required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -73,11 +73,39 @@
                         <form action="https://www.paypal.com/us/signin">
                             <button class="btn btn-primary" id="paypalButton">Continue with Paypal</button>
                         </form>
-
                     </div>
                 </div>
             </div>
 
+            <div class="modal fade bd-example-modal-lg credit-card-modal " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <form method="post" class="needs-validation">
+                            <div class="form-group col">
+                                <label for="cNumber" class="col-sm-2 col-form-label">Number on card</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="cNumber" maxlength="16" placeholder="1111-2222-3333-4444" required>
+                                </div>
+
+                                <label for="cName" class="col-sm-2 col-form-label" >Name on card</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="cName" placeholder="Ion Dolanescu" required>
+                                </div>
+
+                                <label for="expiryDate" class="col-sm-2 col-form-label">Expiry Date</label>
+                                <div class="col-sm-10">
+                                    <input type="month" class="form-control" id="expiryDate" required>
+                                </div>
+
+                                <label for="cvvCode" class="col-sm-2 col-form-label">CVV Code</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="cvvCode" maxlength="3" minlength="3" required>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
 </main>
 </body>
