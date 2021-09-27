@@ -1,3 +1,11 @@
+ALTER TABLE IF EXISTS ONLY products
+    DROP CONSTRAINT IF EXISTS products_categories__fk,
+    DROP CONSTRAINT IF EXISTS products_suppliers__fk;
+
+DROP TABLE IF EXISTS suppliers;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS products;
+
 create table suppliers
 (
     id            serial
@@ -6,8 +14,6 @@ create table suppliers
     supplier_name varchar
 );
 
-alter table suppliers
-    owner to codecooler;
 
 create unique index suppliers_id_uindex
     on suppliers (id);
@@ -19,9 +25,6 @@ create table categories
             primary key,
     category_name varchar
 );
-
-alter table categories
-    owner to codecooler;
 
 create table products
 (
@@ -39,9 +42,6 @@ create table products
         constraint products_suppliers__fk
             references suppliers
 );
-
-alter table products
-    owner to codecooler;
 
 create unique index products_id_uindex
     on products (id);

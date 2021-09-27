@@ -2,13 +2,12 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.UserOrderDao;
-import com.codecool.shop.dao.implementation.UserOrderDaoMem;
+import com.codecool.shop.dao.inMemory.UserOrderDaoMem;
 import com.codecool.shop.model.User;
 import com.codecool.shop.service.UserOrder;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +18,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 @WebServlet(urlPatterns = {"/checkout"})
     public class CheckoutController extends HttpServlet {

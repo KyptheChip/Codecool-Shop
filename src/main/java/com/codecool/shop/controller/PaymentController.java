@@ -1,7 +1,7 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.implementation.UserOrderDaoMem;
+import com.codecool.shop.dao.inMemory.UserOrderDaoMem;
 import com.codecool.shop.service.UserOrder;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;

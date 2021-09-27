@@ -1,4 +1,4 @@
-package com.codecool.shop.dao;
+package com.codecool.shop.dao.inDatabase;
 
 import java.io.IOException;
 import java.util.Properties;

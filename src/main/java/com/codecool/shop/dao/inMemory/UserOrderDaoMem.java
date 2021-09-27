@@ -1,4 +1,4 @@
-package com.codecool.shop.dao.implementation;
+package com.codecool.shop.dao.inMemory;
 
 import com.codecool.shop.dao.UserOrderDao;
 import com.codecool.shop.service.UserOrder;
