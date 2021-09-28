@@ -11,10 +11,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupplierDaoJdbc implements SupplierDao {
+public class SupplierDaoJDBC implements SupplierDao {
     private DataSource dataSource = new DatabaseManager().connect();
 
-    public SupplierDaoJdbc() throws SQLException {
+    public SupplierDaoJDBC() throws SQLException {
     }
 
     @Override

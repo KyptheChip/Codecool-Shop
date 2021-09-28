@@ -12,6 +12,8 @@ public class DatabaseManager {
     private ProductDao productDao;
     private ProductCategoryDao productCategoryDao;
     private SupplierDao supplierDao;
+    private static Object dao;
+
 
 
     DataSource connect() throws SQLException {
@@ -32,5 +34,9 @@ public class DatabaseManager {
         System.out.println("Connection ok.");
 
         return dataSource;
+    }
+
+    public static Object getDao() {
+        return dao;
     }
 }
