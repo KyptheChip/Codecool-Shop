@@ -3,30 +3,32 @@
 <body>
 
 <main style="padding-top: 5rem" th:fragment="copy" class="container" role="main">
-    <div style="padding-bottom: 5px" class="d-flex justify-content-start">
-        <strong class="fs-5" th:text="${category == null ? supplier.name+' supplier' : category.name}">Title</strong>
-    </div>
 
-    <div id="products" class="row">
-        <div class="col col-sm-12 col-md-6 col-lg-4" th:each="prod,iterStat : ${products}">
-            <div class="card">
-                <img class="" src="http://placehold.it/400x250/000/fff" th:attr="src='/static/img/product_' + ${prod.id} + '.jpg'" alt="" width="400" height="250"/>
-                <div class="card-header">
-                    <h4 class="card-title" th:text="${prod.name}">Product name</h4>
-                    <p class="card-text" th:text="${prod.description}">Product description... </p>
-                </div>
-                <div class="card-body">
-                    <div class="card-text">
-                        <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
-                    </div>
-                        <div class="card-text">
-                            <button id="shoppingCart" th:data-prod="${prod.getId()}" type="button" class="btn btn-success">Add to cart</button>
-                        </div>
-                </div>
-            </div>
-        </div>
+    <div th:each="category,iterStat : ${categories}" th:text="${category.getName()}"></div>
+<!--    <div style="padding-bottom: 5px" class="d-flex justify-content-start">-->
+<!--        <strong class="fs-5" th:text="${category == null ? supplier.name+' supplier' : category.name}">Title</strong>-->
+<!--    </div>-->
 
-    </div>
+<!--    <div id="products" class="row">-->
+<!--        <div class="col col-sm-12 col-md-6 col-lg-4" th:each="prod,iterStat : ${products}">-->
+<!--            <div class="card">-->
+<!--                <img class="" src="http://placehold.it/400x250/000/fff" th:attr="src='/static/img/product_' + ${prod.id} + '.jpg'" alt="" width="400" height="250"/>-->
+<!--                <div class="card-header">-->
+<!--                    <h4 class="card-title" th:text="${prod.name}">Product name</h4>-->
+<!--                    <p class="card-text" th:text="${prod.description}">Product description... </p>-->
+<!--                </div>-->
+<!--                <div class="card-body">-->
+<!--                    <div class="card-text">-->
+<!--                        <p class="lead" th:text="${prod.getPrice()}">100 USD</p>-->
+<!--                    </div>-->
+<!--                        <div class="card-text">-->
+<!--                            <button id="shoppingCart" th:data-prod="${prod.getId()}" type="button" class="btn btn-success">Add to cart</button>-->
+<!--                        </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    </div>-->
 
 
 </main>

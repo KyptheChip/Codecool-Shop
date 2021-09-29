@@ -24,13 +24,13 @@ public class SupplierDaoJDBC implements SupplierDao {
     @Override
     public Supplier find(int id) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "SELECT supplier_name FROM suppliers WHERE id = ?";
+            String sql = "SELECT * FROM suppliers WHERE id = ?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             if (!rs.next())
                 return null;
-            return new Supplier(rs.getString(1));
+            return new Supplier(rs.getInt(1), rs.getString(2));
         } catch (SQLException e) {
             throw new RuntimeException();
         }
@@ -48,7 +48,7 @@ public class SupplierDaoJDBC implements SupplierDao {
             ResultSet rs = st.executeQuery();
             List<Supplier> supplierList = new ArrayList<>();
             while (rs.next()) {
-                Supplier supplier = new Supplier(rs.getString(2));
+                Supplier supplier = new Supplier(rs.getInt(1), rs.getString(2));
                 supplierList.add(supplier);
             }
             return supplierList;

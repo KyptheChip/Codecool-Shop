@@ -24,6 +24,7 @@ public class DatabaseManager {
         String dbName = properties.readProperty("database");
         String user = properties.readProperty("user");
         String password = properties.readProperty("password");
+        dao = properties.readProperty("dao");
 
         dataSource.setDatabaseName(dbName);
         dataSource.setUser(user);

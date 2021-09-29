@@ -25,15 +25,15 @@ public class ProductDaoJDBC implements ProductDao {
     @Override
     public Product find(int id) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "SELECT * FROM product WHERE id = ?";
+            String sql = "SELECT * FROM products WHERE id = ?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             if (!rs.next()) { // first row was not found == no data was returned by the query
                 return null;
             }
-            return new Product(rs.getString(2), rs.getBigDecimal(3),
-                    rs.getString(4), rs.getString(5), rs.getObject(6, ProductCategory.class), rs.getObject(7, Supplier.class));
+            return new Product(rs.getInt(1), rs.getString(2), rs.getBigDecimal(4),
+                    rs.getString(5), rs.getString(3), rs.getObject(6, ProductCategory.class), rs.getObject(7, Supplier.class));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -49,14 +49,14 @@ public class ProductDaoJDBC implements ProductDao {
         try (Connection conn = dataSource.getConnection()) {
             ProductCategoryDaoJDBC productCategoryDaoJDBC = new ProductCategoryDaoJDBC();
             SupplierDaoJDBC supplierDaoJDBC = new SupplierDaoJDBC();
-            String sql = "SELECT * FROM product";
+            String sql = "SELECT * FROM products";
             ResultSet rs = conn.createStatement().executeQuery(sql);
             List<Product> result = new ArrayList<>();
             while (rs.next()) {
                 ProductCategory category = productCategoryDaoJDBC.find(rs.getInt(6));
                 Supplier supplier = supplierDaoJDBC.find(rs.getInt(7));
-                Product product = new Product(rs.getString(3), rs.getBigDecimal(2),
-                        rs.getString(4), rs.getString(5), category, supplier);
+                Product product = new Product(rs.getInt(1), rs.getString(2), rs.getBigDecimal(4),
+                        rs.getString(5), rs.getString(3), category, supplier);
                 result.add(product);
             }
             return result;
@@ -69,13 +69,15 @@ public class ProductDaoJDBC implements ProductDao {
     public List<Product> getProductsBySupplier(Supplier spl) {
         try (Connection conn = dataSource.getConnection()) {
             ProductCategoryDaoJDBC productCategoryDaoJDBC = new ProductCategoryDaoJDBC();
-            String sql = "SELECT * FROM product WHERE supplier = ?";
-            ResultSet rs = conn.createStatement().executeQuery(sql);
+            String sql = "SELECT * FROM products WHERE product_supplier = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, spl.getId());
+            ResultSet rs = st.executeQuery();
             List<Product> result = new ArrayList<>();
             while (rs.next()) { // while result set pointer is positioned before or on last row read authors
                 ProductCategory category = productCategoryDaoJDBC.find(rs.getInt(6));
-                Product product = new Product(rs.getString(3), rs.getBigDecimal(2),
-                        rs.getString(4), rs.getString(5), category, spl);
+                Product product = new Product(rs.getInt(1), rs.getString(2), rs.getBigDecimal(4),
+                        rs.getString(5), rs.getString(3), category, spl);
                 result.add(product);
             }
             return result;
@@ -88,13 +90,15 @@ public class ProductDaoJDBC implements ProductDao {
     public List<Product> getProductsByCategory(ProductCategory productCategory) {
         try (Connection conn = dataSource.getConnection()) {
             SupplierDaoJDBC supplierDaoJDBC = new SupplierDaoJDBC();
-            String sql = "SELECT * FROM product WHERE category = ?";
-            ResultSet rs = conn.createStatement().executeQuery(sql);
+            String sql = "SELECT * FROM products WHERE product_category = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, productCategory.getId() + 1);
+            ResultSet rs = st.executeQuery();
             List<Product> result = new ArrayList<>();
             while (rs.next()) { // while result set pointer is positioned before or on last row read authors
                 Supplier supplier = supplierDaoJDBC.find(rs.getInt(7));
-                Product product = new Product(rs.getString(3), rs.getBigDecimal(2),
-                        rs.getString(4), rs.getString(5), productCategory, supplier);
+                Product product = new Product(rs.getInt(1) ,rs.getString(2), rs.getBigDecimal(4),
+                        rs.getString(5), rs.getString(3), productCategory, supplier);
                 result.add(product);
             }
             return result;

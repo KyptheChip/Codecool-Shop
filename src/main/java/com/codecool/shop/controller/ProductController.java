@@ -10,6 +10,9 @@ import com.codecool.shop.dao.inDatabase.SupplierDaoJDBC;
 import com.codecool.shop.dao.inMemory.ProductCategoryDaoMem;
 import com.codecool.shop.dao.inMemory.ProductDaoMem;
 import com.codecool.shop.dao.inMemory.SupplierDaoMem;
+import com.codecool.shop.model.Product;
+import com.codecool.shop.model.ProductCategory;
+import com.codecool.shop.model.Supplier;
 import com.codecool.shop.service.ProductService;
 import com.codecool.shop.config.TemplateEngineUtil;
 import org.thymeleaf.TemplateEngine;
@@ -23,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet(urlPatterns = {"/"})
 public class ProductController extends HttpServlet {
@@ -47,12 +51,12 @@ public class ProductController extends HttpServlet {
                 productDataStore = ProductDaoMem.getInstance();
                 ProductCategoryDao productCategoryDa0 = ProductCategoryDaoMem.getInstance();
                 SupplierDao supplierDao = SupplierDaoMem.getInstance();
-                ProductService productService = new ProductService(productDataStore, productCategoryDa0, supplierDao);
+                productService = new ProductService(productDataStore, productCategoryDa0, supplierDao);
             } else {
                 productDataStore = new ProductDaoJDBC(dataSource);
                 ProductCategoryDao productCategoryDao = new ProductCategoryDaoJDBC();
                 SupplierDao supplierDao = new SupplierDaoJDBC();
-                ProductService productService = new ProductService(productDataStore, productCategoryDao, supplierDao);
+                productService = new ProductService(productDataStore, productCategoryDao, supplierDao);
             }
 
             TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
@@ -82,16 +86,16 @@ public class ProductController extends HttpServlet {
         if (supplierParameter != null) {
             int id = getIdParameter(supplierParameter);
             if (id > 0) {
-                var supplier = productService.getSupplierById(id);
-                var products = productService.getProductsBySupplierId(id);
+                Supplier supplier = productService.getSupplierById(id);
+                List<Product> products = productService.getProductsBySupplierId(id);
                 context.setVariable("products", supplier == null ? productService.getProductsBySupplierId(1) : products);
                 context.setVariable("supplier", supplier == null ? productService.getSupplierById(1) : supplier);
             }
         } else if (categoryParameter != null){
             int id = getIdParameter(categoryParameter);
             if (id > 0) {
-                var category = productService.getProductCategory(id);
-                var products = productService.getProductsByCategoryId(id);
+                ProductCategory category = productService.getProductCategory(id);
+                List<Product> products = productService.getProductsByCategoryId(id);
                 context.setVariable("products", category == null ? productService.getProductsByCategoryId(1) : products);
                 context.setVariable("category", category == null ? productService.getProductCategory(1) : category);
             }
