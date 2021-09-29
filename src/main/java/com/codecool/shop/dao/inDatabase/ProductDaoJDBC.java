@@ -92,7 +92,7 @@ public class ProductDaoJDBC implements ProductDao {
             SupplierDaoJDBC supplierDaoJDBC = new SupplierDaoJDBC();
             String sql = "SELECT * FROM products WHERE product_category = ?";
             PreparedStatement st = conn.prepareStatement(sql);
-            st.setInt(1, productCategory.getId() + 1);
+            st.setInt(1, productCategory.getId());
             ResultSet rs = st.executeQuery();
             List<Product> result = new ArrayList<>();
             while (rs.next()) { // while result set pointer is positioned before or on last row read authors

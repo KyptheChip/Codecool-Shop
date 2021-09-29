@@ -59,12 +59,17 @@ public class ProductController extends HttpServlet {
                 productService = new ProductService(productDataStore, productCategoryDao, supplierDao);
             }
 
-            TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
-            WebContext context = new WebContext(req, resp, req.getServletContext());
+//            TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
+//            WebContext context = new WebContext(req, resp, req.getServletContext());
 
-            context.setVariable("categories", productService.getAllProductCategories());
-            context.setVariable("suppliers", productService.getAllSuppliers());
-            context.setVariable("products", productService.getProductsByCategoryId(1));
+//            context.setVariable("categories", productService.getAllProductCategories());
+//            context.setVariable("suppliers", productService.getAllSuppliers());
+//            context.setVariable("products", productService.getProductsByCategoryId(3));
+            setEngine(req);
+            setContext(req, resp);
+            setMenuContext();
+            setContextVariablesByRequestParameters(req);
+
             engine.process("product/index.html", context, resp.getWriter());
         } catch (SQLException throwables) {
             throwables.printStackTrace();

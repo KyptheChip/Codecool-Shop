@@ -28,8 +28,9 @@ public class SupplierDaoJDBC implements SupplierDao {
             PreparedStatement st = conn.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
-            if (!rs.next())
+            if (!rs.next()) {
                 return null;
+            }
             return new Supplier(rs.getInt(1), rs.getString(2));
         } catch (SQLException e) {
             throw new RuntimeException();
