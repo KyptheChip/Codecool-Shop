@@ -3,6 +3,10 @@ package com.codecool.shop.controller;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.inDatabase.DatabaseManager;
+import com.codecool.shop.dao.inDatabase.ProductCategoryDaoJDBC;
+import com.codecool.shop.dao.inDatabase.ProductDaoJDBC;
+import com.codecool.shop.dao.inDatabase.SupplierDaoJDBC;
 import com.codecool.shop.dao.inMemory.ProductCategoryDaoMem;
 import com.codecool.shop.dao.inMemory.ProductDaoMem;
 import com.codecool.shop.dao.inMemory.SupplierDaoMem;
@@ -16,7 +20,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet(urlPatterns = {"/"})
 public class ProductController extends HttpServlet {
@@ -33,13 +39,32 @@ public class ProductController extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        setEngine(request);
-        setContext(request, response);
-        setMenuContext();
-        setContextVariablesByRequestParameters(request);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ProductDao productDataStore;
+        try {
+            DataSource dataSource = new DatabaseManager().connect();
+            if (DatabaseManager.getDao().equals("memory")) {
+                productDataStore = ProductDaoMem.getInstance();
+                ProductCategoryDao productCategoryDa0 = ProductCategoryDaoMem.getInstance();
+                SupplierDao supplierDao = SupplierDaoMem.getInstance();
+                ProductService productService = new ProductService(productDataStore, productCategoryDa0, supplierDao);
+            } else {
+                productDataStore = new ProductDaoJDBC(dataSource);
+                ProductCategoryDao productCategoryDao = new ProductCategoryDaoJDBC();
+                SupplierDao supplierDao = new SupplierDaoJDBC();
+                ProductService productService = new ProductService(productDataStore, productCategoryDao, supplierDao);
+            }
 
-        engine.process("product/index.html", context, response.getWriter());
+            TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
+            WebContext context = new WebContext(req, resp, req.getServletContext());
+
+            context.setVariable("categories", productService.getAllProductCategories());
+            context.setVariable("suppliers", productService.getAllSuppliers());
+            context.setVariable("products", productService.getProductsByCategoryId(1));
+            engine.process("product/index.html", context, resp.getWriter());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     private void setEngine(HttpServletRequest request) {
