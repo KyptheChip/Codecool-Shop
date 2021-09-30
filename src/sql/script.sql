@@ -5,6 +5,24 @@ ALTER TABLE IF EXISTS ONLY products
 DROP TABLE IF EXISTS suppliers;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS users;
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+create table users
+(
+    id serial,
+	name varchar,
+	email varchar,
+	password varchar
+);
+
+create unique index users_id_uindex
+	on users (id);
+
+alter table users
+	add constraint users_pk
+		primary key (id);
 
 create table suppliers
 (
