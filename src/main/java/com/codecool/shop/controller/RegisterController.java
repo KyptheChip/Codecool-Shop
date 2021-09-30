@@ -41,6 +41,7 @@ public class RegisterController extends HttpServlet {
         this.engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         this.context = new WebContext(req, resp, req.getServletContext());
         engine.process("register.html", context, resp.getWriter());
+        session.removeAttribute("emailTaken");
     }
 
     @Override

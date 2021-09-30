@@ -79,8 +79,9 @@
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid">
                 <a class="btn btn-outline-dark" data-bs-toggle="modal" href="#mainMenuModal" role="button">Menu</a>
-                <a class="btn btn-outline-dark" href="register">Register</a>
-                <a class="btn btn-outline-dark" href="login">Login</a>
+                <a class="btn btn-outline-dark" href="register" th:if="${session.user == null}">Register</a>
+                <a class="btn btn-outline-dark" href="login" th:if="${session.user == null}">Login</a>
+                <p th:unless="${session.user == null}">Logged in as <span th:text="${session.user.name}"></span></p>
                 <div class="d-flex">
                     <button type="button" class="btn btn-outline-info" data-bs-scroll="true" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">

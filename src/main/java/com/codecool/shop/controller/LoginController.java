@@ -35,6 +35,7 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        setData(req, resp);
         this.engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         this.context = new WebContext(req, resp, req.getServletContext());
         engine.process("login.html", context, resp.getWriter());
@@ -42,11 +43,13 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        setData(req, resp);
         String nameOrEmail = req.getParameter("nameOrEmail");
         String password = req.getParameter("password");
         User user = userDao.findByEmailOrName(nameOrEmail);
         if (userDao.checkPassword(password)) {
             session.setAttribute("user", user);
+            resp.sendRedirect("/");
         }
     }
 }

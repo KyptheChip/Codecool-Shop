@@ -24,7 +24,7 @@
 
 <header th:replace="header.html :: copy"></header>
 
-<div th:if="${session.emailTaken != null}">
+<div th:unless="${session.emailTaken == null}">
     <h2>Email Taken</h2>
 </div>
 
