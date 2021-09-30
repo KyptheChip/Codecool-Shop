@@ -23,6 +23,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -35,7 +36,12 @@ public class ProductController extends HttpServlet {
     SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
     ProductService productService = new ProductService(productDataStore, productCategoryDataStore, supplierDataStore);
     TemplateEngine engine;
+    HttpSession session;
     WebContext context;
+
+    private void setData(HttpServletRequest req, HttpServletResponse resp) {
+        session = req.getSession();
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

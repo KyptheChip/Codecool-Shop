@@ -15,7 +15,7 @@ public class UserDaoJDBC implements UserDao {
 
     @Override
     public void add(User user) {
-        try(Connection conn = dataSource.getConnection()) {
+        try (Connection conn = dataSource.getConnection()) {
             String name = user.getName();
             String email = user.getEmail();
             String  password = user.getPassword();
@@ -34,7 +34,7 @@ public class UserDaoJDBC implements UserDao {
 
     @Override
     public User find(int id) {
-        try(Connection conn = dataSource.getConnection()) {
+        try (Connection conn = dataSource.getConnection()) {
             String sql = "SELECT name, email, password FROM users WHERE id = ?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setInt(1, id);
@@ -53,7 +53,7 @@ public class UserDaoJDBC implements UserDao {
 
     @Override
     public User findByEmailOrName(String nameOrEmail) {
-        try(Connection conn = dataSource.getConnection()) {
+        try (Connection conn = dataSource.getConnection()) {
             String sql = "SELECT * FROM users WHERE name = ? OR email = ?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, nameOrEmail);
@@ -73,7 +73,7 @@ public class UserDaoJDBC implements UserDao {
 
     @Override
     public void updateName(String name, String email) {
-        try(Connection conn = dataSource.getConnection()) {
+        try (Connection conn = dataSource.getConnection()) {
             String sql = "UPDATE users SET name = ? WHERE email = ?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, name);
@@ -86,7 +86,7 @@ public class UserDaoJDBC implements UserDao {
 
     @Override
     public void updatePassword(String password, String email) {
-        try(Connection conn = dataSource.getConnection()) {
+        try (Connection conn = dataSource.getConnection()) {
             String sql = "UPDATE users SET password = ? WHERE email = ?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, password);
@@ -99,7 +99,7 @@ public class UserDaoJDBC implements UserDao {
 
     @Override
     public void remove(int id) {
-        try(Connection conn = dataSource.getConnection()) {
+        try (Connection conn = dataSource.getConnection()) {
             String sql = "DELETE FROM users WHERE id = ?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setInt(1, id);
@@ -111,11 +111,43 @@ public class UserDaoJDBC implements UserDao {
 
     @Override
     public void removeByEmail(String email) {
-        try(Connection conn = dataSource.getConnection()) {
+        try (Connection conn = dataSource.getConnection()) {
             String sql = "DELETE FROM users WHERE email = ?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, email);
             st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean checkPassword(String password) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT password FROM users WHERE password = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, password);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next()) {
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean checkForEmail(String email) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT email FROM users WHERE email LIKE ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next()) {
+                return true;
+            }
+            return false;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

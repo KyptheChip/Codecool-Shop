@@ -12,4 +12,7 @@ public interface UserDao {
 
     void remove(int id);
     void removeByEmail(String email);
+
+    boolean checkPassword(String password);
+    boolean checkForEmail(String email);
 }

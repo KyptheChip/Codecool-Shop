@@ -24,23 +24,13 @@
 
 <header th:replace="header.html :: copy"></header>
 
-<div th:if="${session.emailTaken != null}">
-    <h2>Email Taken</h2>
-</div>
-
 <div class="container form-group col">
-    <h2>Register</h2><br><br>
-    <form method="post" action="register">
+    <h2>Login</h2><br><br>
+    <form method="post" action="login">
         <div class="form-group row">
-            <label for="inputName" class="col-sm-2 col-form-label">Username</label>
+            <label for="inputName" class="col-sm-2 col-form-label">Name or Email</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputName" name="name" placeholder="e.g. Bobert">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-            <div class="col-sm-10">
-                <input type="email" class="form-control" id="inputEmail" name="email" placeholder="generic@email.com">
+                <input type="text" class="form-control" id="inputName" name="nameOrEmail">
             </div>
         </div>
         <div class="form-group row">
