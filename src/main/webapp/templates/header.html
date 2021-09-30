@@ -81,6 +81,7 @@
                 <a class="btn btn-outline-dark" data-bs-toggle="modal" href="#mainMenuModal" role="button">Menu</a>
                 <a class="btn btn-outline-dark" href="register" th:if="${session.user == null}">Register</a>
                 <a class="btn btn-outline-dark" href="login" th:if="${session.user == null}">Login</a>
+                <a class="btn btn-outline-dark" href="logout" th:if="${session.user != null}">Logout</a>
                 <p th:unless="${session.user == null}">Logged in as <span th:text="${session.user.name}"></span></p>
                 <div class="d-flex">
                     <button type="button" class="btn btn-outline-info viewcartbutton" data-bs-scroll="true" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
