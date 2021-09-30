@@ -46,9 +46,9 @@ public class ProductController extends HttpServlet {
 //    Double total = 0.0;
     ProductService productService = new ProductService(productDataStore, productCategoryDataStore, supplierDataStore);
     TemplateEngine engine;
+    HttpSession session;
     WebContext context;
 
-    HttpSession session;
     private void setData(HttpServletRequest req, HttpServletResponse resp) {
         session = req.getSession();
         //create shopping cart if not present
@@ -58,6 +58,7 @@ public class ProductController extends HttpServlet {
             session.setAttribute("cart", cartProductList);
 //            session.setAttribute("total", total);
         }
+
     }
 
     @Override
