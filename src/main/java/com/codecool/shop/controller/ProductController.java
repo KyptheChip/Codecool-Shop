@@ -41,7 +41,6 @@ public class ProductController extends HttpServlet {
     ProductDao productDataStore = ProductDaoMem.getInstance();
     ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
     SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-    private final Gson gson = new Gson();
     List<CartProduct> cartProductList = new ArrayList<>();
 //    Double total = 0.0;
     ProductService productService = new ProductService(productDataStore, productCategoryDataStore, supplierDataStore);

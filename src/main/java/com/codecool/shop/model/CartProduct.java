@@ -3,7 +3,7 @@ package com.codecool.shop.model;
 import java.math.BigDecimal;
 
 public class CartProduct extends Product{
-    private int quantity = 0;
+    private int quantity;
 
     public CartProduct(Product product) {
         super(product.getId(), product.getName(), product.getDefaultPrice(), product.getDefaultCurrency().toString(), product.getDescription(), product.getProductCategory(), product.getSupplier());

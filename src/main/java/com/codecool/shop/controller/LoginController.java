@@ -31,10 +31,6 @@ public class LoginController extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         session = req.getSession();
-//        userDao = (UserDaoJDBC) session.getAttribute("user");
-//        if(userDao == null){
-//            session.setAttribute("user", userDao);
-//        }
     }
 
     @Override
