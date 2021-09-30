@@ -30,7 +30,7 @@ public class ProductCategoryDaoJDBC implements ProductCategoryDao {
             PreparedStatement st = conn.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
-            if (!rs.next()) { // first row was not found == no data was returned by the query
+            if (!rs.next()) {
                 return null;
             }
             return new ProductCategory(rs.getInt(1), rs.getString(2));

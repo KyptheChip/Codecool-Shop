@@ -1,5 +1,6 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
@@ -7,46 +8,73 @@ import com.codecool.shop.dao.inDatabase.DatabaseManager;
 import com.codecool.shop.dao.inDatabase.ProductCategoryDaoJDBC;
 import com.codecool.shop.dao.inDatabase.ProductDaoJDBC;
 import com.codecool.shop.dao.inDatabase.SupplierDaoJDBC;
+import com.codecool.shop.dao.inMemory.CartDaoMem;
 import com.codecool.shop.dao.inMemory.ProductCategoryDaoMem;
 import com.codecool.shop.dao.inMemory.ProductDaoMem;
 import com.codecool.shop.dao.inMemory.SupplierDaoMem;
+import com.codecool.shop.model.CartProduct;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import com.codecool.shop.service.ProductService;
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.google.gson.Gson;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+@MultipartConfig
 @WebServlet(urlPatterns = {"/"})
 public class ProductController extends HttpServlet {
     ProductDao productDataStore = ProductDaoMem.getInstance();
     ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
     SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+    private final Gson gson = new Gson();
+    List<CartProduct> cartProductList = new ArrayList<>();
+//    Double total = 0.0;
     ProductService productService = new ProductService(productDataStore, productCategoryDataStore, supplierDataStore);
     TemplateEngine engine;
     WebContext context;
 
+    HttpSession session;
+    private void setData(HttpServletRequest req, HttpServletResponse resp) {
+        session = req.getSession();
+        //create shopping cart if not present
+        cartProductList = (List<CartProduct>) session.getAttribute("cart");
+//        total = (Double) session.getAttribute("total");
+        if (cartProductList == null) {
+            session.setAttribute("cart", cartProductList);
+//            session.setAttribute("total", total);
+        }
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
+        setData(request, response);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProductDao productDataStore;
+        setData(req, resp);
         try {
             DataSource dataSource = new DatabaseManager().connect();
+            String id = req.getParameter("id");
+
+
             if (DatabaseManager.getDao().equals("memory")) {
                 productDataStore = ProductDaoMem.getInstance();
                 ProductCategoryDao productCategoryDa0 = ProductCategoryDaoMem.getInstance();
@@ -59,12 +87,28 @@ public class ProductController extends HttpServlet {
                 productService = new ProductService(productDataStore, productCategoryDao, supplierDao);
             }
 
-//            TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
-//            WebContext context = new WebContext(req, resp, req.getServletContext());
 
-//            context.setVariable("categories", productService.getAllProductCategories());
-//            context.setVariable("suppliers", productService.getAllSuppliers());
-//            context.setVariable("products", productService.getProductsByCategoryId(3));
+            if (id != null) {
+                int productID = Integer.parseInt(id);
+                System.out.println("linia 112");
+
+                CartDao cartDataStore = CartDaoMem.getInstance();
+                Product actProduct = productDataStore.find(productID);
+
+                System.out.println(actProduct.toString());
+
+                if (actProduct != null) {
+                    cartDataStore.add(productID);
+
+                }
+                cartProductList = cartDataStore.getAll();
+//                for (CartProduct product: cartProductList) {
+//                    total +=  Double.parseDouble(product.getPrice());
+//                }
+                session.setAttribute("cart", cartProductList);
+//                session.setAttribute("total", total);
+            }
+
             setEngine(req);
             setContext(req, resp);
             setMenuContext();
@@ -76,7 +120,7 @@ public class ProductController extends HttpServlet {
         }
     }
 
-    private void setEngine(HttpServletRequest request) {
+        private void setEngine(HttpServletRequest request) {
         this.engine = TemplateEngineUtil.getTemplateEngine(request.getServletContext());
     }
 

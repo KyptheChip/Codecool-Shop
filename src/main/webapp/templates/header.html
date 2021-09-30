@@ -78,31 +78,31 @@
             <div class="container-fluid">
                 <a class="btn btn-outline-dark" data-bs-toggle="modal" href="#mainMenuModal" role="button">Menu</a>
                 <div class="d-flex">
-                    <button type="button" class="btn btn-outline-info" data-bs-scroll="true" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                    <button type="button" class="btn btn-outline-info viewcartbutton" data-bs-scroll="true" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
                             <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"></path>
                         </svg>
-                        <span id="cartQuantity" class="badge bg-light text-dark rounded-pill align-text-bottom">0</span>
+<!--                        <span id="cartQuantity" class="badge bg-light text-dark rounded-pill align-text-bottom" th:text="${session.size}"></span>-->
                     </button>
                 </div>
             </div>
         </nav>
     </div>
-    <div style="margin-top: 8.1rem" class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div action="/cart" style="margin-top: 8.1rem" class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header line-height-fixed font-size-lg">
-            <strong id="offcanvasRightLabel" class="mx-auto">Your Cart (2)</strong>
+            <strong id="offcanvasRightLabel" class="mx-auto">Your Cart</strong>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
 
-        <div class="offcanvas-body">
+        <div class="offcanvas-body" onclick="this.reload()">
             <ul class="list-group list-group-lg list-group-flush">
-                <li class="list-group-item">
+                <li class="list-group-item" th:each="prod : ${session.cart}">
                     <div class="row align-items-center">
                         <div class="col-4">
 
                             <!-- Image -->
                             <a href="/">
-                                <img class="img-fluid" src="/static/img/product_1.jpg" alt="...">
+                                <img class="img-fluid" th:attr="src='/static/img/product_' + ${prod.id} + '.jpg'" alt="...">
                             </a>
 
                         </div>
@@ -110,57 +110,16 @@
 
                             <!-- Title -->
                             <p class="font-size-sm font-weight-bold mb-6">
-                                <a class="text-body" href="/">Cotton floral print Dress</a> <br>
-                                <span class="text-muted">$40.00</span>
+                                <a class="text-body" th:text="${prod.name}"></a> <br>
+                                <span class="text-muted" th:text="${prod.defaultPrice} + ' ' + ${prod.defaultCurrency}"></span>
                             </p>
 
                             <!--Footer -->
                             <div class="d-flex align-items-center">
 
-                                <!-- Select -->
-                                <select class="custom-select custom-select-xxs w-auto">
-                                    <option value="1">1</option>
-                                    <option value="1">2</option>
-                                    <option value="1">3</option>
-                                </select>
-
-                                <!-- Remove -->
-                                <a class="font-size-xs text-gray-400 ml-auto" href="#!">
-                                    <i class="fe fe-x"></i> Remove
-                                </a>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="row align-items-center">
-                        <div class="col-4">
-
-                            <!-- Image -->
-                            <a href="/">
-                                <img class="img-fluid" src="/static/img/product_2.jpg" alt="...">
-                            </a>
-
-                        </div>
-                        <div class="col-8">
-
-                            <!-- Title -->
-                            <p class="font-size-sm font-weight-bold mb-6">
-                                <a class="text-body" href="/">Suede cross body Bag</a> <br>
-                                <span class="text-muted">$49.00</span>
-                            </p>
-
-                            <!--Footer -->
-                            <div class="d-flex align-items-center">
-
-                                <!-- Select -->
-                                <select class="custom-select custom-select-xxs w-auto">
-                                    <option value="1">1</option>
-                                    <option value="1">2</option>
-                                    <option value="1">3</option>
-                                </select>
+                            <td data-th="Quantity">
+                                <input type="number" class="form-control text-center quantitychanger" th:value="${prod.quantity}" min="0" max="168" th:data-id="${prod.id}">
+                            </td>
 
                                 <!-- Remove -->
                                 <a class="font-size-xs text-gray-400 ml-auto" href="#!">
@@ -171,7 +130,51 @@
                     </div>
                 </li>
             </ul>
-            <a href="checkout" class="btn btn-primary">Checkout</a>
+<!--            <table class="table table-hover border bg-white">-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                    <th>Product</th>-->
+<!--                    <th>Price</th>-->
+<!--                    <th style="width:10%;">Quantity</th>-->
+<!--                    <th>Subtotal</th>-->
+<!--                    <th>Action</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody id="cartitemsplace" th:each="prod : ${session.cart}">-->
+<!--                <tr>-->
+<!--                    <td>-->
+<!--                        <div class="row">-->
+<!--                            <div class="col-lg-2 Product-img">-->
+<!--                                <img th:attr="src='/static/img/product_' + ${prod.id} + '.jpg'" alt="..." class="img-responsive" />-->
+<!--                            </div>-->
+<!--                            <div class="col-lg-10">-->
+<!--                                <h4 class="nomargin" th:text="${prod.name}"></h4>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </td>-->
+<!--                    <td th:text="${prod.defaultPrice}"></td>-->
+<!--                    <td data-th="Quantity">-->
+<!--                        <input type="number" class="form-control text-center quantitychanger" th:value="${prod.quantity}" min="0" max="168" th:data-id="${prod.id}">-->
+<!--                    </td>-->
+<!--                    <td th:text="${prod.getPrice()}"></td>-->
+<!--                    <td class="actions" data-th="" style="width:10%;">-->
+<!--                        <button class="btn btn-warning btn-sm"><i class="fa fa-refresh"></i></button>-->
+<!--                        <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>-->
+<!--                    </td>-->
+<!--                </tr>-->
+
+<!--                </tbody>-->
+                <tfoot>
+                <tr>
+                    <td colspan="2" class="hidden-xs"></td>
+                    <td class="hidden-xs text-center" style="width:10%;"><strong id="totalprice">Total :$0</strong></td>
+                    <td><a href="/payment" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+                </tr>
+                </tfoot>
+            </table>
+            <div class="product" >
+
+            </div>
         </div>
     </div>
 </header>
