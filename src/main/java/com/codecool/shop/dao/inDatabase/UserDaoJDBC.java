@@ -57,6 +57,7 @@ public class UserDaoJDBC implements UserDao {
             String sql = "SELECT * FROM users WHERE name = ? OR email = ?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, nameOrEmail);
+            st.setString(2, nameOrEmail);
             ResultSet rs = st.executeQuery();
             if (!rs.next()) {
                 return null;
@@ -124,13 +125,15 @@ public class UserDaoJDBC implements UserDao {
     @Override
     public boolean checkPassword(String password) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "SELECT password FROM users WHERE password = ?";
+            String sql = "SELECT crypt(?, password) FROM users WHERE password = crypt(?, password)";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, password);
+            st.setString(2, password);
             ResultSet rs = st.executeQuery();
             if (!rs.next()) {
                 return false;
             }
+            System.out.println(rs.getString(1));
             return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -144,10 +147,7 @@ public class UserDaoJDBC implements UserDao {
             PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, email);
             ResultSet rs = st.executeQuery();
-            if (!rs.next()) {
-                return true;
-            }
-            return false;
+            return !rs.next();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
