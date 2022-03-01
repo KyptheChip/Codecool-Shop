@@ -2,6 +2,8 @@
 
 ## About
 
+<img src="src/main/webapp/static/img/shop.png">
+
 Codecool shop is an ecommerce website. You can browse products by category, or by looking them up, you can add them to your cart and make the purchase!
 
 ## Technologies used
